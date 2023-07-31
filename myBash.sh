@@ -1,5 +1,8 @@
+#_____________ Variables _______________
+gitPromptPath='/usr/share/git-core/contrib/completion/'
+
 #______________My Commands _______________
-source /usr/share/git-core/contrib/completion/git-prompt.sh
+source $gitPromptPath/git-prompt.sh
 export PS1='\[\033[38;5;226m\] >-<\n\[\033[38;5;46m\] \u\[\033[38;5;241m\]@\[\033[38;5;39m\]\h \[\033[38;5;45m\]\w \[\033[38;5;46m\]$(__git_ps1 " (%s)")\n\[\033[38;5;226m\] >-< \n\[\033[38;5;39m\] •‿• \[\033[0m\] '
 #_____________My Aliases____________________
 
