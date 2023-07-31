@@ -9,6 +9,7 @@
 ##### nmcli 
 ##### npm 
 ##### git 
+##### wmctrl
 
 
 ### Installation
