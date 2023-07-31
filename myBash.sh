@@ -95,11 +95,15 @@ function nextSetup() {
     wmctrl -i -c $edge_window_dump 
     # Move Edge to workspace 1
     wmctrl -i -r $edge_window_01  -t 0
+    wmctrl -i -r $edge_window_01  -b add,maximized_vert,maximized_horz
     # Move VS Code to workspace 2
     wmctrl -i -r $vscode_window_01  -t 1
+    wmctrl -i -r $vscode_window_01  -b add,maximized_vert,maximized_horz
     # Move VS Code to workspace 4
     wmctrl -i -r $edge_window_02  -t 2
+    wmctrl -i -r $edge_window_02  -b add,maximized_vert,maximized_horz
     # Move VS Code to workspace 3
     wmctrl -i -r $vscode_window_02  -t 3
+    wmctrl -i -r $vscode_window_02  -b add,maximized_vert,maximized_horz
 
 }
