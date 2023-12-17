@@ -20,8 +20,11 @@
     ```
     This command will display a list of all users along with their UIDs.
    
-## edit mount.sh and add the mount.sh in a path /path_to_script & make it executable
-     ```bash
+## Edit mount.sh and add the mount.sh in a path /path_to_script & make it executable:
+1 . Open a terminal window.
+
+2. Type the following command and press Enter:
+    ```bash
     sudo chmod +x /path_to_script/mount.sh
     ```
 ## add script to crontab
