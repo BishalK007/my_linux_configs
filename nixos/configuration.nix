@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      <home-manager/nixos>
     ];
 
   # Bootloader.
@@ -111,7 +112,7 @@
     bun
     yarn
     pnpm
-
+    fzf
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -152,6 +153,7 @@
 
     c = "sudo nvim /etc/nixos/configuration.nix";
     rb = "sudo nixos-rebuild switch";
+
   };
   
   virtualisation.docker.enable = true; # __ Install Docker __ #
@@ -165,5 +167,22 @@
 	};
   };
   services.blueman.enable = true;
+
+
+  home-manager.users.bishal = { pkgs, ... }: {
+    home.packages = [ pkgs.atool pkgs.httpie ];
+    programs.bash.enable = true;
+
+    programs.zoxide.enable = true;
+    programs.zoxide.enableBashIntegration= true;
+    programs.zoxide.options = [
+      "--cmd cd"
+    ];
+
+    # The state version is required and should stay at the version you
+    # originally installed.
+    home.stateVersion = "24.05";
+  };
+
 
 }
