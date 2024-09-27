@@ -4,6 +4,12 @@
 
 { config, pkgs, ... }:
 
+let
+  gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
+    gke-gcloud-auth-plugin
+  ]);
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -23,7 +29,11 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    networkmanager.dns = "default";  # Use "dnsmasq" or "systemd-resolved" if needed.
+    nameservers = [ "8.8.8.8" "8.8.4.4" ];  # Google's DNS servers.
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Kolkata";
@@ -109,10 +119,22 @@
     vscode
     gh
     git
+    git-lfs
     bun
     yarn
     pnpm
     fzf
+    gdk
+    python3
+    python312Packages.pip
+    gcc
+    gnumake42
+    go
+    ffmpeg
+    nodejs_22
+    gnupg 
+    pass
+    docker-credential-helpers
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -181,8 +203,9 @@
 
     # The state version is required and should stay at the version you
     # originally installed.
-    home.stateVersion = "24.05";
+    home.stateVersion = "23.05";
   };
+
 
 
 }
