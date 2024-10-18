@@ -8,6 +8,7 @@ let
   gdk = pkgs.google-cloud-sdk.withExtraComponents( with pkgs.google-cloud-sdk.components; [
     gke-gcloud-auth-plugin
   ]);
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 
 {
@@ -95,7 +96,7 @@ in
   users.users.bishal = {
     isNormalUser = true;
     description = "Bishal Karmakar";
-    extraGroups = [ "networkmanager" "wheel" "docker" ]; # ____ Added docker group ______ #
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ]; # ____ Added docker group ______ #
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -110,13 +111,14 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     neovim
     xclip
     google-chrome
-    vscode
+    unstable.vscode
     gh
     git
     git-lfs
@@ -135,7 +137,15 @@ in
     gnupg 
     pass
     docker-credential-helpers
+    dig
+    inetutils
+    wl-clipboard
+    qemu
+    qemu_kvm
+    virt-manager
+    repototxt 
   ];
+ 
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -179,6 +189,11 @@ in
   };
   
   virtualisation.docker.enable = true; # __ Install Docker __ #
+
+  # __ FOR QEMU __ #
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
+
  
   # Enable Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -206,6 +221,10 @@ in
     home.stateVersion = "23.05";
   };
 
+  #___ OVERLAY IMPORTS ____#
+  nixpkgs.overlays = [
+    (import /etc/nixos/overlays/repototxt-overlay.nix)
+  ];
 
-
+  
 }
