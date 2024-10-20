@@ -143,7 +143,8 @@ in
     qemu
     qemu_kvm
     virt-manager
-    repototxt 
+    repototxt
+    htop
   ];
  
 
