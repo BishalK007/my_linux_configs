@@ -17,6 +17,10 @@ in
       ./hardware-configuration.nix
       <home-manager/nixos>
     ];
+  #___ OVERLAY IMPORTS ____#
+  nixpkgs.overlays = [
+    (import /etc/nixos/overlays/repototxt-overlay.nix)
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -143,8 +147,10 @@ in
     qemu
     qemu_kvm
     virt-manager
-    repototxt
     htop
+    nix-prefetch-scripts
+    repototxt
+    jq
   ];
  
 
@@ -193,7 +199,7 @@ in
 
   # __ FOR QEMU __ #
   virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.qemuPackage = pkgs.qemu_kvm;
+  virtualisation.libvirtd.qemu.package = pkgs.qemu_kvm;
 
  
   # Enable Bluetooth
@@ -222,10 +228,7 @@ in
     home.stateVersion = "23.05";
   };
 
-  #___ OVERLAY IMPORTS ____#
-  nixpkgs.overlays = [
-    (import /etc/nixos/overlays/repototxt-overlay.nix)
-  ];
+
 
   
 }
