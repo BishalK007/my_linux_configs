@@ -63,8 +63,10 @@ in
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.desktopManager.plasma6.enable = true;
+
+
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -110,6 +112,14 @@ in
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Turn on hyprland
+  programs.hyprland = {
+   enable = true;
+   xwayland.enable = true;  # Enable XWayland if needed
+  };
+  
+
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -151,6 +161,8 @@ in
     nix-prefetch-scripts
     repototxt
     jq
+    kdePackages.konsole
+    kitty
   ];
  
 
