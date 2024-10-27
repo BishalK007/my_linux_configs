@@ -115,8 +115,11 @@ in
   # Turn on hyprland
   programs.hyprland = {
    enable = true;
-   xwayland.enable = true;  # Enable XWayland if needed
   };
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+
+  
   
 
 
@@ -163,7 +166,18 @@ in
     jq
     kdePackages.konsole
     kitty
-  ];
+    waybar
+    # nerdfonts -- used nix-env
+    river
+    dracula-icon-theme
+    hyprpaper
+    fuzzel 
+    networkmanagerapplet
+    blueman
+    xfce.thunar
+
+];
+
  
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -239,8 +253,9 @@ in
     # originally installed.
     home.stateVersion = "23.05";
   };
-
-
+	
+  # ENable flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   
 }
