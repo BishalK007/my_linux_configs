@@ -1,0 +1,68 @@
+/* style.css */
+* {
+    font-family: "Hack Nerd Font", monospace;
+    font-size: 12px;
+    background: rgba(217, 161, 255, 0);
+    /* color: rgba(59, 43, 69 , 0.95); */
+}
+#window {
+	background: rgba(201, 125, 251, 0.421); 
+    color: rgba(255, 255, 255, 0.95);
+	margin: 0.5em;
+	border-radius: 8px;
+	padding: 0.5em; 
+}
+#workspaces {
+	background: rgba(201, 125, 251, 0.649); 
+    color: rgba(59, 43, 69 , 0.95);
+	margin: 0.5em;
+	border-radius: 8px;
+	margin-left: 10px;
+}
+#workspaces button {
+	padding: 0 0.5em;
+	background-color: rgba(217, 161, 255, 0.649);
+	color: #ffffff;
+	margin: 0.25em;
+}
+
+
+#workspaces button.visible{
+    color: #ffffff;
+    background: #552571;
+}
+
+#cpu, #memory, #battery, #network, #tray, #clock {
+    padding: 0 0.5em;
+	/* margin: 0.5em 0; */
+}
+
+#cpu {
+    background: #2f4f4f;
+	border-radius: 8px 0 0 8px;
+	margin-right: 0.5em;
+}
+
+#memory {
+    background: #4f2f4f;
+}
+
+#battery {
+    background: #4f4f2f;
+}
+
+#tray * {
+    background: #2f4f4f;
+}
+
+#clock {
+    background: #4f2f4f;
+	border-radius: 0 8px 8px 0;
+}
+
+#right_module {
+	border-radius: 8px;
+	margin: 0.5em 0;
+	background: #2f4f4f;
+	margin-right: 10px;
+}
