@@ -1,0 +1,118 @@
+{
+    "layer": "top",
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "hyprland/window"
+    ],
+    "modules-right": [
+        "group/right_module",
+        "group/tray_module"
+    ],
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1"
+    },
+    "group/right_module": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/screenrecorder",
+            "backlight",
+            "custom/pipewire",
+            "cpu",
+            "memory",
+            "battery",
+
+            "clock"
+        ]
+    },
+    "group/tray_module" : {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/network",
+            "custom/bluetooth",
+            "tray"
+        ]
+    },
+    "custom/screenrecorder": {
+        "exec": "$HOME/.config/hypr/waybar-screenrecorder/screenrecorder status",
+        "interval": "once",
+        "signal": 1,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{}",
+        "on-click": "$HOME/.config/hypr/waybar-screenrecorder/screenrecorder toggle fullscreen",
+        "on-click-right": "$HOME/.config/hypr/waybar-screenrecorder/screenrecorder toggle region"
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": [""]
+    },
+    "custom/pipewire": {
+        "exec": "$HOME/.config/hypr/scripts/volume-ctrl.sh --get-volume",
+        "signal": 10, 
+        "return-type": "string",
+        "format": "{}",
+        "tooltip": true,
+        "on-click": "$HOME/.config/hypr/scripts/volume-ctrl.sh --mute-toggle",
+        "on-scroll-up": "$HOME/.config/hypr/scripts/volume-ctrl.sh --increase-volume",
+        "on-scroll-down": "$HOME/.config/hypr/scripts/volume-ctrl.sh --decrease-volume",
+        "max-length": 50
+    },
+    "cpu": {
+        "interval": 1,
+        "format": " {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+        "format-icons": [
+            "▁",
+            "▂",
+            "▃",
+            "▄",
+            "▅",
+            "▆",
+            "▇",
+            "█"
+        ]
+    },
+    "memory": {
+        "interval": 30,
+        "format": " MEM: {}%",
+        "max-length": 10
+    },
+    "battery": {
+        "format": " {capacity}% {icon}",
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format-icons": [
+            "",
+            "",
+            ""
+        ]
+    },
+    "custom/network": {
+        "exec": "nm-applet",
+        "tooltip": true,
+        "interval": 60,
+        "format": "{}"
+    },
+    "custom/bluetooth": {
+        "exec": "blueman-applet",
+        "tooltip": true,
+        "interval": 60,
+        "format": "{}"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10,
+        "format": "{}",
+        "tooltip": true
+    },
+    "clock": {
+        "format-alt": "{:%a, %d. %b  %H:%M}"
+    }
+}

@@ -1,3 +1,0 @@
- - To use way bar u require nerd fonts 
- - For some reason systemwide install was not working so used -
- - nix-env -iA nerdfonts
