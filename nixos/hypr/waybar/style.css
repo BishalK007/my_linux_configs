@@ -61,3 +61,6 @@
 	background: rgb(174, 52, 255);
 	border-radius: 8px;
 }
+tooltip {
+	background: rgba(201, 125, 251, 0.421);
+}

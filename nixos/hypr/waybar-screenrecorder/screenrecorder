@@ -25,7 +25,7 @@ if [ "$1" == "status" ]; then
 		NR==2{printf "Save to: %s\\n", $0}
 		NR==3{printf "Log to: %s\"}\n", $0}' "$pidf"
 	else
-		printf '{"text":" REC", "tooltip":"Stopped"}\n'
+		printf '{"text":" REC", "tooltip":"Stopped, left -> fullscreen, right -> region"}\n'
 	fi
 
 elif [ "$1" == "toggle" ]; then

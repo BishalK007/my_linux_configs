@@ -18,23 +18,36 @@
     "group/right_module": {
         "orientation": "horizontal",
         "modules": [
+            "custom/capture",
             "custom/screenrecorder",
             "backlight",
             "custom/pipewire",
             "cpu",
             "memory",
             "battery",
-
             "clock"
         ]
     },
-    "group/tray_module" : {
+    "group/tray_module": {
         "orientation": "horizontal",
         "modules": [
             "custom/network",
             "custom/bluetooth",
             "tray"
         ]
+    },
+    "custom/capture": {
+        "exec": "echo '{\"tooltip\": \"left -> fullscreen, right -> region\"}'",
+        "interval": "once",
+        "signal": 1,
+        "return-type": "json",
+        "tooltip": true,
+        "format": "{icon} CAP",
+        "format-icons": [
+            ""
+        ],
+        "on-click": "grim -t png $HOME/Pictures/Screenshots/screenshot_$(date +%F_%T).png",
+        "on-click-right": "grim -g \"$(slurp)\" -t png $HOME/Pictures/Screenshots/screenshot_$(date +%F_%T).png"
     },
     "custom/screenrecorder": {
         "exec": "$HOME/.config/hypr/waybar-screenrecorder/screenrecorder status",
@@ -49,18 +62,19 @@
     "backlight": {
         "device": "intel_backlight",
         "format": "{icon} {percent}%",
-        "format-icons": [""]
+        "format-icons": [
+            ""
+        ]
     },
     "custom/pipewire": {
         "exec": "$HOME/.config/hypr/scripts/volume-ctrl.sh --get-volume",
-        "signal": 10, 
+        "signal": 10,
         "return-type": "string",
         "format": "{}",
         "tooltip": true,
         "on-click": "$HOME/.config/hypr/scripts/volume-ctrl.sh --mute-toggle",
         "on-scroll-up": "$HOME/.config/hypr/scripts/volume-ctrl.sh --increase-volume",
-        "on-scroll-down": "$HOME/.config/hypr/scripts/volume-ctrl.sh --decrease-volume",
-        "max-length": 50
+        "on-scroll-down": "$HOME/.config/hypr/scripts/volume-ctrl.sh --decrease-volume"
     },
     "cpu": {
         "interval": 1,
