@@ -13,9 +13,13 @@ VOLUME_LIMIT="1.5" # 1 -> 100%, 1.5 -> 150% like that
 # Check if last volume temp file exists, and read it
 LAST_VOLUME=$(cat "$TEMP_FILE" 2>/dev/null || echo "0.5")
 
+
+#gets the muted status of the default audio sink
+IS_MUTED=$(wpctl status | awk '/Audio/,/Video/' | awk '/Sinks/,/Sources/' | grep -E '^[[:space:]]*(├─|│)[[:space:]]+(\*+)' | grep -q 'MUTED' && echo true || echo false)
+
 # Function to display current volume with icon for Waybar
 get_volume() {
-    if [[ "$VOLUME" == "0.00" ]]; then
+    if [[ "$VOLUME" == "0.00" || "$IS_MUTED" == "true" ]]; then
         ICON=""  # Mute icon
     elif [[ "$VOLUME" < 0.3 ]]; then
         ICON=""  # Low volume icon
@@ -43,12 +47,7 @@ case "$1" in
         pkill -RTMIN+"$VOLUME_WAYBAR_UPDATE_SIGNAL" waybar
         ;;
     --mute-toggle)
-        if [[ "$VOLUME" == "0.00" ]]; then
-            wpctl set-volume -l "$VOLUME_LIMIT" @DEFAULT_AUDIO_SINK@ "$LAST_VOLUME"
-        else
-            echo "$VOLUME" > "$TEMP_FILE"
-            wpctl set-volume @DEFAULT_AUDIO_SINK@ 0%
-        fi
+        wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
         # SIGNAL FOR UPDATE
         pkill -RTMIN+"$VOLUME_WAYBAR_UPDATE_SIGNAL" waybar
         ;;
