@@ -61,6 +61,8 @@ in
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "bishal";
 
   # Enable the KDE Plasma Desktop Environment.
   # services.displayManager.sddm.enable = true;
@@ -126,13 +128,18 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  #Allow unsafe packages
+  nixpkgs.config.permittedInsecurePackages = [
+        "qbittorrent-4.6.4"
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    neovim
+    # neovim ## Later as enable 
     xclip
     google-chrome
     unstable.vscode
@@ -175,8 +182,37 @@ in
     networkmanagerapplet
     blueman
     xfce.thunar
-
+    btop
+    themechanger
+    hyprcursor
+    grim
+    wf-recorder
+    hyprlock
+    slurp
+    playerctl 
+    libsForQt5.qt5.qtwayland
+    qbittorrent
+    gnome.gnome-keyring
+    vlc
+    slack
+    rustup
+    home-manager
+    telegram-desktop
+    audacity
+    gimp-with-plugins
+    eww
+    socat
+    bc
+    unstable.code-cursor
+    neofetch
 ];
+  # Fonts __ 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+  ];
 
  
 
@@ -217,11 +253,39 @@ in
     svim = "sudo nvim";
 
     c = "sudo nvim /etc/nixos/configuration.nix";
+    cc = "sudo EDITOR=\"code --wait\" sudoedit /etc/nixos/configuration.nix";
     rb = "sudo nixos-rebuild switch";
 
   };
   
-  virtualisation.docker.enable = true; # __ Install Docker __ #
+  # virtualisation.docker.enable = true; # __ Install Docker __ #
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+    "features" = {
+      "containerd-snapshotter"= true;
+    };
+    };
+  };
+
+  ## __________ NEOVIM _______________________ ##
+  programs.neovim = {
+  enable = true;
+  configure = {
+    customRC = ''
+      set number
+      set autoindent
+      set tabstop=4
+      set shiftwidth=4
+      set smarttab
+      set softtabstop=4
+      set mouse=a
+    '';
+    packages.myVimPackage = with pkgs.vimPlugins; {
+      start = [ ctrlp ];
+    };
+  };
+};
 
   # __ FOR QEMU __ #
   virtualisation.libvirtd.enable = true;
@@ -238,24 +302,109 @@ in
   };
   services.blueman.enable = true;
 
-
+  
   home-manager.users.bishal = { pkgs, ... }: {
     home.packages = [ pkgs.atool pkgs.httpie ];
-    programs.bash.enable = true;
+    programs.bash = {
+      enable = true;
+        # Set GTK environment variables (optional but recommended)
+        sessionVariables = {
+          GTK_THEME = "Adwaita:dark";
+          GTK_PRIMARY_BUTTON_WARPS_SLIDER = "1";
+        };
+        initExtra = ''
+          neofetch
+          # Function to parse and format the current Git branch
+          parse_git_branch() {
+              branch=$(git branch 2>/dev/null | sed -n '/^\*/s/^\* //p')
+              if [ -n "$branch" ]; then
+                  echo "[$branch] "
+              fi
+          }
 
-    programs.zoxide.enable = true;
-    programs.zoxide.enableBashIntegration= true;
-    programs.zoxide.options = [
-      "--cmd cd"
-    ];
+          # Export the customized PS1 with proper colors and spacing
+          export PS1="\[\e[38;5;135m\]\u@\h \[\e[38;5;183m\]\w \[\e[38;5;135m\]\$(parse_git_branch)\[\e[38;5;183m\]\$ "
+        '';
+    };
+    programs.zoxide = {
+      enable = true;
+      enableBashIntegration = true;
+      options = [
+        "--cmd cd"
+      ];
+    };
 
-    # The state version is required and should stay at the version you
-    # originally installed.
-    home.stateVersion = "23.05";
-  };
+
+
+    # Set GTK environment variables (optional but recommended)
+    # home.environment.variables = {
+    #   GTK_THEME = "Adwaita";
+    #   GTK_PRIMARY_BUTTON_WARPS_SLIDER = "1";
+    # };
+
+    # Create GTK 2.0 settings.ini
+    home.file.".config/gtk-2.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=Adwaita:dark
+      gtk-application-prefer-dark-theme=true
+      gtk-primary-button-warps-slider=true
+    '';
+
+    # Create GTK 3.0 settings.ini
+    home.file.".config/gtk-3.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=Adwaita:dark
+      gtk-application-prefer-dark-theme=true
+      gtk-icon-theme-name=Dracula
+      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-size=25
+      gtk-font-name=Noto Sans, 10
+      gtk-xft-antialias=1
+      gtk-xft-hinting=1
+      gtk-xft-hintstyle=hintslight
+      gtk-xft-rgba=none
+      gtk-xft-dpi=98304
+      gtk-overlay-scrolling=true
+      gtk-key-theme-name=Default
+      gtk-menu-images=true
+      gtk-button-images=true
+      gtk-primary-button-warps-slider=true
+    '';
+
+    # Create GTK 4.0 settings.ini
+    home.file.".config/gtk-4.0/settings.ini".text = ''
+      [Settings]
+      gtk-theme-name=Adwaita:dark
+      gtk-application-prefer-dark-theme=true
+      gtk-icon-theme-name=Dracula
+      gtk-cursor-theme-name=Adwaita
+      gtk-cursor-theme-size=25
+      gtk-font-name=Noto Sans, 10
+      gtk-xft-antialias=1
+      gtk-xft-hinting=1
+      gtk-xft-hintstyle=hintslight
+      gtk-xft-rgba=none
+      gtk-xft-dpi=98304
+      gtk-overlay-scrolling=true
+      gtk-primary-button-warps-slider=true
+    '';
+
+      # The state version is required and should stay at the version you
+      # originally installed.
+      home.stateVersion = "24.05";
+    };
+  
+  
 	
   # ENable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Enable gtk settings-
+  environment.variables = {
+    GTK_THEME = "Adwaita:dark";
+    GTK_PRIMARY_BUTTON_WARPS_SLIDER = "1";
+  };
+
+	
   
 }
